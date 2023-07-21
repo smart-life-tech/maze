@@ -166,10 +166,12 @@ void loop()
                 turn_right();
                 delay(1000);
             }
-            if (US_L() > US_R())
+           else if (US_L() > US_R())
             {
                 turn_left();
                 delay(1000);
+            }else{
+                reverse();
             }
         }
     }
