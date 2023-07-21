@@ -31,7 +31,8 @@ void setup()
     int modus = 1;
     motor2.setSpeed(65);
     motor1.setSpeed(65);
-
+    pinMode(left_ir, INPUT);
+    pinMode(right_ir, INPUT);
     Serial.begin(9600);
 }
 
@@ -141,31 +142,35 @@ int US_L()
 }
 void loop()
 {
-    // see if there is no obstacle in the front
-    if (US_F() > 7)
-    {
-        forward();
-        delay(500);
-    }
-    else
-    {
-        stop();
-        reverse();
-         delay(100);
-        stop();
-        // check the right and left sensor
-        // if left is greater than right
-        // turn left
+    if (!digitalRead(left_ir) || !digitalRead(right_ir)) // if there is no obstacle
+    {                                                    // obstacle left and right
+        // see if there is no obstacle in the front
 
-        if (US_R() > US_L())
+        if (US_F() > 7)
         {
-            turn_right();
-             delay(1000);
+            forward();
+            delay(500);
         }
-        if (US_L() > US_R())
+        else
         {
-            turn_left();
-             delay(1000);
+            stop();
+            reverse();
+            delay(100);
+            stop();
+            // check the right and left sensor
+            // if left is greater than right
+            // turn left
+
+            if (US_R() > US_L())
+            {
+                turn_right();
+                delay(1000);
+            }
+            if (US_L() > US_R())
+            {
+                turn_left();
+                delay(1000);
+            }
         }
     }
 }
